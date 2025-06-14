@@ -1,0 +1,47 @@
+.home-page {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+}
+
+.chat-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: #36393f;
+}
+
+.no-chat-selected {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #b9bbbe;
+  background-color: #2f3136;
+}
+
+.no-chat-selected h3 {
+  margin: 0 0 10px 0;
+  font-size: 18px;
+  color: #dcddde;
+}
+
+.no-chat-selected p {
+  margin: 0;
+  font-size: 14px;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .home-page {
+    flex-direction: column;
+  }
+  
+  .chat-list-container {
+    width: 100%;
+    height: 200px;
+  }
+}
