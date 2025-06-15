@@ -9,10 +9,17 @@ export interface AuthContextType {
   token: string;
   isLoading: boolean;
   login: (credentials: LoginCredentials) => Promise<void>;
+  register: (credentials: RegisterCredentials) => Promise<void>;
   logout: () => void;
 }
 
 export interface LoginCredentials {
+  phoneNumber: string;
+  password: string;
+}
+
+export interface RegisterCredentials {
+  username: string;
   phoneNumber: string;
   password: string;
 }

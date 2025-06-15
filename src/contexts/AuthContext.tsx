@@ -4,6 +4,7 @@ import axios from "../utils/axios";
 import type {
   AuthContextType,
   LoginCredentials,
+  RegisterCredentials,
   User,
   UserTokenData,
 } from "../utils/types";
@@ -42,6 +43,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     localStorage.setItem("refreshToken", tokenData.refreshToken);
     setToken(tokenData.token);
   };
+
+  const register = async (credentials: RegisterCredentials) => {
+    setIsLoading(true);
+    const tokenResponse = await axios.post<UserTokenData>("user/register", credentials);
+    const tokenData: UserTokenData = tokenResponse.data;
+    localStorage.setItem("token", tokenData.token);
+    localStorage.setItem("refreshToken", tokenData.refreshToken);
+    setToken(tokenData.token);
+  }
+
   const refreshToken = async () => {
     const token = localStorage.getItem("token");
     const refreshToken = localStorage.getItem("refreshToken");
@@ -74,7 +85,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setIsLoading(false);
   };
   return (
-    <AuthContext.Provider value={{ user, token, isLoading, login, logout }}>
+    <AuthContext.Provider value={{ user, token, isLoading, login, logout, register }}>
       {children}
     </AuthContext.Provider>
   );
