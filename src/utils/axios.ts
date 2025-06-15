@@ -1,7 +1,10 @@
 import axios from "axios";
 
+export const baseURL =
+  "https://chatappapi-hdc7fkf8a4dxh4dj.canadacentral-01.azurewebsites.net/api/";
+
 const instance = axios.create({
-  baseURL: "https://localhost:7147/api/",
+  baseURL: baseURL,
 });
 
 instance.interceptors.request.use((config) => {
@@ -24,10 +27,10 @@ instance.interceptors.response.use(
       const token = localStorage.getItem("token");
       if (refreshToken) {
         try {
-          const response = await axios.post(
-            "https://localhost:7147/api/user/refresh",
-            { token: token, refreshToken: refreshToken }
-          );
+          const response = await axios.post(`${baseURL}user/refresh`, {
+            token: token,
+            refreshToken: refreshToken,
+          });
           localStorage.setItem("token", response.data.token);
           localStorage.setItem("refreshToken", response.data.refreshToken);
           originalRequest.headers.Authorization = `Bearer ${response.data.token}`;
