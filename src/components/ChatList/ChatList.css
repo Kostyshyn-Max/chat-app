@@ -3,13 +3,15 @@
   height: 100vh;
   background-color: #2f3136;
   border-right: 1px solid #40444b;
-  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 .chat-list-header {
   padding: 20px;
   border-bottom: 1px solid #40444b;
   background-color: #36393f;
+  flex-shrink: 0;
 }
 
 .chat-list-header h2 {
@@ -17,6 +19,30 @@
   font-size: 18px;
   font-weight: 600;
   color: #dcddde;
+}
+
+.chat-list-scrollable {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Custom scrollbar for webkit browsers */
+.chat-list-scrollable::-webkit-scrollbar {
+  width: 8px;
+}
+
+.chat-list-scrollable::-webkit-scrollbar-track {
+  background: #2f3136;
+}
+
+.chat-list-scrollable::-webkit-scrollbar-thumb {
+  background: #40444b;
+  border-radius: 4px;
+}
+
+.chat-list-scrollable::-webkit-scrollbar-thumb:hover {
+  background: #4f545c;
 }
 
 .chat-list {
@@ -96,6 +122,13 @@
   padding: 20px;
   text-align: center;
   color: #b9bbbe;
+}
+
+.start-chat-container {
+  padding: 20px;
+  border-top: 1px solid #40444b;
+  background-color: #36393f;
+  flex-shrink: 0;
 }
 
 
