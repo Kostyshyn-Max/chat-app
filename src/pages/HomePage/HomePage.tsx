@@ -41,7 +41,7 @@ function HomePage() {
     if (!user) return;
 
     const connection = new signalR.HubConnectionBuilder()
-      .withUrl("https://localhost:7147/chathub", {
+      .withUrl("https://chatappapi-hdc7fkf8a4dxh4dj.canadacentral-01.azurewebsites.net/chathub", {
         accessTokenFactory: () => localStorage.getItem("token") || "",
       })
       .withAutomaticReconnect()
