@@ -23,6 +23,10 @@
   overflow-y: auto;
   background-color: #36393f;
   color: #dcddde;
+  scroll-behavior: smooth;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .chat-input {

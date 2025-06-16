@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import type { Chat, Message } from "../../utils/types";
 import "./Chat.css";
 import axios from "../../utils/axios";
 import MessageComponent from "../Message/MessageComponent";
+import { useAuth } from "../../contexts/AuthContext";
 
 interface Props {
   chat: Chat;
@@ -13,8 +14,9 @@ interface Props {
 function ChatCompoment({ chat, onSendMessage, incomingMessage }: Props) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-
   const [message, setMessage] = useState("");
+  const { user } = useAuth();
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const fetchMessages = async () => {
@@ -27,7 +29,6 @@ function ChatCompoment({ chat, onSendMessage, incomingMessage }: Props) {
 
     fetchMessages();
   }, [chat]);
-
   useEffect(() => {
     if (!incomingMessage) return;
 
@@ -35,6 +36,14 @@ function ChatCompoment({ chat, onSendMessage, incomingMessage }: Props) {
       setMessages((prevMessages) => [...prevMessages, incomingMessage]);
     }
   }, [incomingMessage]);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
 
   const handleSend = () => {
     if (message.trim()) {
@@ -54,11 +63,13 @@ function ChatCompoment({ chat, onSendMessage, incomingMessage }: Props) {
       <div className="chat-header">
         <h3>Chat with {chat.otherUser?.username}</h3>
       </div>
-      <div className="chat-messages">
-        {isLoading ? (
+      <div className="chat-messages">        {isLoading ? (
           <p>Loading messages...</p>
         ) : messages && messages.length > 0 ? (
-          messages.map((msg) => <MessageComponent key={msg.id} message={msg} />)
+          <>
+            {messages.map((msg) => <MessageComponent key={msg.id} message={msg} currentUserId={user?.id} />)}
+            <div ref={messagesEndRef} />
+          </>
         ) : (
           <p>Start your conversation with {chat.otherUser?.username}</p>
         )}

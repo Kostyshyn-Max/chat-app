@@ -16,10 +16,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [token, setToken] = useState<string>(
     localStorage.getItem("token") || ""
-  );
-  useEffect(() => {
-    if (token) {
-      console.log("juser")
+  );  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    if (storedToken) {
+      setToken(storedToken);
       axios
         .get<User>("user/me")
         .then((response) => {
@@ -32,9 +32,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     } else {
       setIsLoading(false);
     }
-  }, [token]);
+  }, []);
 
-  console.log(user)
   const login = async (credentials: LoginCredentials) => {
     setIsLoading(true);
     const tokenResponse = await axios.post<UserTokenData>("user/login", credentials);
@@ -42,8 +41,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     localStorage.setItem("token", tokenData.token);
     localStorage.setItem("refreshToken", tokenData.refreshToken);
     setToken(tokenData.token);
+    
+    try {
+      const userResponse = await axios.get<User>("user/me");
+      setUser(userResponse.data);
+      setIsLoading(false);
+    } catch (error) {
+      await refreshToken();
+    }
   };
-
   const register = async (credentials: RegisterCredentials) => {
     setIsLoading(true);
     const tokenResponse = await axios.post<UserTokenData>("user/register", credentials);
@@ -51,6 +57,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     localStorage.setItem("token", tokenData.token);
     localStorage.setItem("refreshToken", tokenData.refreshToken);
     setToken(tokenData.token);
+    
+    try {
+      const userResponse = await axios.get<User>("user/me");
+      setUser(userResponse.data);
+      setIsLoading(false);
+    } catch (error) {
+      await refreshToken();
+    }
   }
 
   const refreshToken = async () => {

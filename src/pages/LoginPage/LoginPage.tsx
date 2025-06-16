@@ -19,6 +19,7 @@ function LoginPage() {
 
     try {
       await login({ phoneNumber, password });
+      console.log("Login successful");
       navigate("/");
     } catch (error: any) {
       console.error(error);

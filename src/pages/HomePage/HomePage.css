@@ -34,7 +34,6 @@
   font-size: 14px;
 }
 
-/* Mobile responsiveness */
 @media (max-width: 768px) {
   .home-page {
     flex-direction: column;
